@@ -24,11 +24,9 @@ public class RandomPointsFromCountryProvider implements PointsFromCountryProvide
 		this.pointsInPolygonFilter = pointsInPolygonFilter;
 	}
 	
-	
 	public List<Point> providePointsFromCountry(String countryName) throws CountryPointsProviderException {
-		MultiPolygon countryPolygon;
 		try {
-			countryPolygon = polygonFileReader.readPolygonFromFile(countryName);
+			MultiPolygon countryPolygon = polygonFileReader.readPolygonFromFile(countryName);
 			List<Point> randomPoints = pointsGenerator.generatePointList(1000000);
 			return pointsInPolygonFilter.filterPointsInsidePolygon(countryPolygon, randomPoints);
 		} catch (PolygonFileReaderException e) {

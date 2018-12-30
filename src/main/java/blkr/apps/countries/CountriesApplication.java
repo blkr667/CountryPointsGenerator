@@ -14,7 +14,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 
 import java.util.List;
-import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 @SpringBootApplication
@@ -29,7 +28,7 @@ public class CountriesApplication {
 	public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
 		return args -> {
 			try {
-				String countryName = readCountryName();
+				String countryName = args != null && args.length > 0 ? args[0] : "Poland";
 				long startTime = System.nanoTime();
 				LOGGER.info("Generating and filtering points for country " + countryName + " has started");
 				PointsFromCountryProvider pointsFromCountryProvider = ctx.getBean(PointsFromCountryProvider.class);
@@ -40,16 +39,6 @@ public class CountriesApplication {
 			} catch(CountryPointsProviderException e) {
 				LOGGER.info("Finding points failed. " + e.getMessage());
 			}
-
-			
 		};
-	}
-	
-	private String readCountryName() {
-		System.out.println("Enter country name (english):");
-		try (Scanner sc = new Scanner(System.in)) {
-			sc.hasNextLine();
-			return sc.nextLine().trim();
-		}
 	}
 }
